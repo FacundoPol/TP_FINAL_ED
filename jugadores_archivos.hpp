@@ -50,17 +50,19 @@ void cargar_jugador(tjugador &jugador,parchivo jugadores)
 				cout<<"EL ALIAS NO PUEDE SER MENOR A CUATRO LETRAS"<<endl;
 			else
 			{
-				jugadores = fopen("jugadores.txt","rb");
-				while(!feof(jugadores)&&!encontrado)
-				{
-					fread(&jugador_lista,sizeof(jugador_lista),1,jugadores);
-					if(strcmp(jugador.alias,jugador_lista.alias)==0)
+				if(jugadores==NULL){
+					jugadores = fopen("jugadores.txt","rb");
+					while(!feof(jugadores)&&!encontrado)
 					{
-						encontrado=true;
-						cout<<"EL ALIAS YA EXISTE ELIGE OTRO"<<endl;
+						fread(&jugador_lista,sizeof(jugador_lista),1,jugadores);
+						if(strcmp(jugador.alias,jugador_lista.alias)==0)
+						{
+							encontrado=true;
+							cout<<"EL ALIAS YA EXISTE ELIGE OTRO"<<endl;
+						}
 					}
+					fclose(jugadores);
 				}
-				fclose(jugadores);
 			}
 		}while(strlen(jugador.alias)<4 || encontrado == true);
 	
