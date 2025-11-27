@@ -121,7 +121,7 @@ void cargar_jugador_abb(tjugador &jugador,pnodoj arbol)
 		}
 	}while(strlen(jugador.alias)<4 || encontrado == true);
 	
-	jugador.puntaje_acumulado=7;
+	jugador.puntaje_acumulado=0;
 	jugador.cant_jueg_gan=0;
 	jugador.mejor_puntaje=0;
 }
@@ -129,15 +129,18 @@ void cargar_jugador_abb(tjugador &jugador,pnodoj arbol)
 
 void archivo_jugador_abb(pnodoj &arbol,parchivo &jugadores)
 {
+	pnodoj eliminado;
 	if(arbol!=NULL)
 	{
 		archivo_jugador_abb(arbol->izq,jugadores);
 		archivo_jugador_abb(arbol->der,jugadores);
 		fwrite(&arbol->jugador,sizeof(arbol->jugador),1,jugadores);
+		eliminado=arbol;
+		delete(eliminado);
 	}
 }
 
-void crear_jugador(parchivo &jugadores,pnodoj &nodo)
+void guardar_jugador_archivo(parchivo &jugadores,pnodoj &nodo)
 {
 	tjugador jugador;
 	
@@ -148,9 +151,6 @@ void crear_jugador(parchivo &jugadores,pnodoj &nodo)
 	jugador = nodo->jugador;
 	
 	fclose(jugadores);
-	
-	delete nodo;
-	nodo =  NULL;
 }
 
 
@@ -248,11 +248,11 @@ pnodoj eliminar_jugador_abb(pnodoj &arbol,tcad alias)
 		aux=NULL;
 	else
 	{
-		if(strcmp(arbol->jugador.alias,alias)==1)
+		if(strcmp(arbol->jugador.alias,alias)>0)
 			aux=eliminar_jugador_abb(arbol->izq,alias);
 		else
 		{
-			if(strcmp(arbol->jugador.alias,alias)==-1)
+			if(strcmp(arbol->jugador.alias,alias)<0)
 				aux=eliminar_jugador_abb(arbol->der,alias);
 			else
 			{
@@ -344,7 +344,7 @@ void insercion_jugadores_abb(pnodoj &arbol,pnodoj nuevo)
 		arbol=nuevo;
 	else
 	{
-		if(strcmp(nuevo->jugador.alias,arbol->jugador.alias)==1)
+		if(strcmp(nuevo->jugador.alias,arbol->jugador.alias)>0)
 			insercion_jugadores_abb(arbol->der,nuevo);
 		else
 			insercion_jugadores_abb(arbol->izq,nuevo);
@@ -361,7 +361,8 @@ void menu(int &op)
 	cout<<"|4| MODIFICAR"<<endl;
 	cout<<"|5| BORRAR"<<endl;
 	cout<<"|0| SALIR"<<endl;
-	cout<<"Ingrese opcion: ";
+	cout<<endl;
+	cout<<"INGRESE OPCION: ";
 	cin>>op;
 }
 
@@ -396,10 +397,17 @@ void seleccion_menu(int op,parchivo &jugadores,pnodoj &arbol)
 		modificar_jugador_abb(arbol,alias);
 		break;
 	case 5:
-		cout<<"LEGAJO REGISTRO A BORRAR: ";
+		cout<<"JUGADOR A BORRAR: ";
 		fflush(stdin);
 		gets(alias);
-		eliminar_jugador_abb(arbol,alias);
+		aux = busqueda_jugador_abb(arbol,alias);
+		if(aux!=NULL)
+		{
+			eliminar_jugador_abb(arbol,alias);
+			cout<<"EL JUGADOR HA SIDO BORRADO CON EXITO"<<endl;
+		}
+		else
+		   cout<<"EL JUGADOR INGRESADO NO EXISTE"<<endl;
 		break;
 	default:
 		cout<<"SALISTE"<<endl;

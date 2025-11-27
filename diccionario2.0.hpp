@@ -1,4 +1,3 @@
-#pragma once
 #include <iostream>
 #include <cstdio> 
 #include <string.h>
@@ -101,23 +100,19 @@ void crearNodo(pnodo &nuevo,tregistro palabra){
 		}
 	}
 	
-	/*bool empiezaConLetra(tregistro pala){
-		char c = pala.nombre[0];
-		if((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
-			return true;
-		else
-			return false;
-	}*/
 		// procedimiento que se encarga de cargar los datos en un registro este interactua con el usuario
 	void cargaPalabras2(tregistro &p){
-		cout<<"para cargar los datos debe asegurarse de no colocar datos vacios y las palabras deben tener 5 o mas caracteres"<<endl;
+		cout<<"para cargar los datos debe asegurarse de no colocar datos vacios y las palabras deben tener 3 o mas caracteres"<<endl;
 		do{
 			
 			cout<<"nombre de la palabra: ";
 				fflush(stdin);
 				gets(p.nombre);
+				
+				if(strlen(p.nombre)<3)
+					cout<<"NO PUEDE INGRESAR PALABRAS MENORES A TRES CARACTERES"<<endl;
 			
-		}while(strcmp(p.nombre,"")==0 || strlen(p.nombre)<=5);
+		}while(strcmp(p.nombre,"")==0 || strlen(p.nombre)<3);
 		
 		do{
 			cout << "cantidad de caracteres de la palabra: "; 
@@ -190,38 +185,6 @@ void crearNodo(pnodo &nuevo,tregistro palabra){
 			fwrite(&pa,sizeof(pa),1,palabra);
 			fclose(palabra);
 		}
-			
-			//esto es para mostrar que se cargo correcto en la pila la estructura
-		/*void mostrarPilaPalabras(tpila &p) {
-				tpila pilaAuxiliar; // se usa una pila auxiliar
-				tregistro registroMostrado;
-				int contador = 0;
-				
-				iniciarPila(pilaAuxiliar);
-				//  Desapilar y mostrar
-				while (!pilaVacia(p)) {
-					registroMostrado = quitarPila(p);
-					contador++;
-					cout << "Elemento :" << contador << ":" << endl;
-					cout << "  > Nombre : " << registroMostrado.nombre << endl;
-					cout << "  > Caracteres : " << registroMostrado.cantidadCaracteres << endl;
-					cout << "  > Definición : " << registroMostrado.definicion << endl;
-					cout << "------------------------------------------" << endl;
-					
-					// se Almacena en la pila auxiliar
-					agregarPila(pilaAuxiliar, registroMostrado);
-				}
-				
-				if (contador == 0) {
-					cout << "La pila está vacía. No hay palabras cargadas." << endl;
-				} else {
-					cout << "? Se verificaron " << contador << " registros en la pila." << endl;
-				}
-				while (!pilaVacia(pilaAuxiliar)) {
-					registroMostrado = quitarPila(pilaAuxiliar);
-					agregarPila(p, registroMostrado);
-				}
-			} */	
 		
 	//cuenta la cantidad de palabras del diccionario
 	int contarTotalPalabras(tdiccionario dicci) {

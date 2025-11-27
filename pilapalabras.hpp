@@ -25,31 +25,31 @@ void iniciarPila(tpila &pila){
 	pila.cima = -1;
 }
 	
-	bool pilaLLena(tpila pila){
-		return pila.cima == MAX - 1;
+bool pilaLLena(tpila pila){
+	return pila.cima == MAX - 1;
+}
+	
+bool pilaVacia(tpila pila){
+	return pila.cima == -1;
+}
+
+void agregarPila(tpila &pila, tregistro reg){
+	
+	if(pilaLLena(pila)){
+		cout << "Error: Pila llena. No se puede agregar el registro." << endl;
+	} else {
+	pila.cima++;
+	pila.datos[pila.cima] = reg;	
 	}
-		
-		bool pilaVacia(tpila pila){
-			return pila.cima == -1;
-		}
-			
-			void agregarPila(tpila &pila, tregistro reg){
-				if(pilaLLena(pila)){
-					cout << "Error: Pila llena. No se puede agregar el registro." << endl;
-				} else {
-					pila.cima++;
-					pila.datos[pila.cima] = reg;	
-				}
-			}
-				
-				tregistro quitarPila(tpila &pila) {
-					tregistro resultado; // Inicializacion de seguridad a cero/vacio
-					
-					if (pilaVacia(pila)) {
-						cout << "pila vacia " << endl;
-					} else {
-						resultado = pila.datos[pila.cima];	
-						pila.cima--;
-					}
-					return resultado;
-				}
+}
+
+tregistro quitarPila(tpila &pila) {
+	tregistro resultado; // Inicializacion de seguridad a cero/vacio
+	if (pilaVacia(pila)) {
+		cout << "pila vacia " << endl;
+	} else {
+		resultado = pila.datos[pila.cima];	
+		pila.cima--;
+	}
+	return resultado;
+}
